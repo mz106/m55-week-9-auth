@@ -1,4 +1,5 @@
 const postTest = async (req, res) => {
+  console.log("postTest controller hit and username: ", req.body.username);
   try {
     // db code
 
