@@ -1,4 +1,5 @@
 const User = require("./model");
+const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
   try {
@@ -12,7 +13,15 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    res.status(201).json({ message: "success", user: req.body });
+    const token = await jwt.sign({ id: req.user.id }, process.env.SECRET);
+
+    const user = {
+      id: req.user.id,
+      username: req.user.username,
+      token: token,
+    };
+
+    res.status(201).json({ message: "success", user });
   } catch (error) {
     res.status(500).json({ message: error.message, error: error });
   }
