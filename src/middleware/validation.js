@@ -112,13 +112,18 @@ const validateLogin = async (req, res, next) => {
       where: { username: req.body.username },
     });
 
+    if (!user) {
+      res.status(404).json({ message: `User ${req.body.username} not found` });
+      return;
+    }
+
     if (req.body.password !== user.password) {
       res.status(401).json({ message: "password not valid" });
       return;
     }
 
     req.user = user;
-
+    console.log("req.user in validateLogin: ", req.user);
     next();
   } catch (error) {
     res.status(500).json({ message: error.message, error: error });
